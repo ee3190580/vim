@@ -1,6 +1,9 @@
+syntax on
+set termguicolors
+"set term=xterm-256color
 let g:solarized_termcolors=256
 set background=light
-colorscheme solarized
+colorscheme solarized8_high
 
 noremap <F8> <ESC> :w <CR> :!g++ -std=c++17 -Wshadow -Wall -o %< % -O2 -Wno-unused-result <CR>
 inoremap <F8> <ESC> :w <CR> :!g++ -std=c++17 -Wshadow -Wall -o %< % -O2 -Wno-unused-result <CR>
@@ -30,3 +33,18 @@ set tabstop=4
 set vb t_vb=
 set shellslash
 filetype indent on
+
+"Clipboard configuration
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+        augroup WSLYank
+                    autocmd!
+                            autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+                                augroup END
+                            endif
+
+        au BufNewFile,BufRead *.tex
+            \ set nocursorline |
+            \ set nornu |
+            \ set number |
+            \ let g:loaded_matchparen=1 |
